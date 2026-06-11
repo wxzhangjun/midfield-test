@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>你的中场状态报告</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: #f9f8f6;
+  color: #2c2c2c;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  padding-bottom: 80px;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px 20px 60px;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.result-tag {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.result-insight {
+  font-size: 16px;
+  line-height: 1.85;
+  color: #444;
+  margin-bottom: 36px;
+  letter-spacing: 0.3px;
+}
+
+.result-divider {
+  height: 1px;
+  background: #e0ddd6;
+  margin: 28px 0;
+}
+
+.cta-hint {
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cta-btn-primary {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  background: #2c2c2c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  transition: opacity 0.15s;
+}
+.cta-btn-primary:active {
+  opacity: 0.85;
+}
+
+.cta-btn-secondary {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  background: #fff;
+  color: #2c2c2c;
+  border: 1px solid #e0ddd6;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.cta-btn-secondary:active {
+  background: #f0ede7;
+  border-color: #ccc;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(10px);
+  background: rgba(44, 44, 44, 0.92);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0);
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="result-tag" id="resultTag"></div>
+  <div class="result-insight" id="resultInsight"></div>
+  <div class="result-divider"></div>
+  <p class="cta-hint">这只是一张1分钟快照。<br>完整的局势图，需要一次深度自检才能拼出来。</p>
+  <div class="btn-group">
+    <button class="cta-btn-primary" id="btnDeep">花5分钟，做一次深度自检 →</button>
+    <button class="cta-btn-secondary" id="btnCopy">复制我的结果</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  var results = {
+    'A': {
+      tag: '你当前的中场状态：领航型',
+      insight: '你比大多数人清醒。知道方向，也在走，焦虑有但可控。\n\n你现在缺的不是动力，是"确认感"——有人告诉你这条路没走偏。\n\n也许你偶尔会想：我扛得住，但我扛得值吗？'
+    },
+    'B': {
+      tag: '你当前的中场状态：维持型',
+      insight: '你没崩，但你心里清楚——你在靠惯性滑行。\n\n每天能应付，但"为自己做点什么"这句话在脑子里转了很久，一直没落地。\n\n不是不想动，是动的那一下好像总差一口气。'
+    },
+    'C': {
+      tag: '你当前的中场状态：负重型',
+      insight: '说实话，你已经在透支了。不是某一天特别累，是那种持续的、闷闷的、说不清的疲。\n\n你不是没有能力，是所有能力都在应付别人的KPI，没给自己留出一格电。\n\n这不是矫情，是结构性消耗。'
+    },
+    'D': {
+      tag: '你当前的中场状态：卡点型',
+      insight: '你可能自己也说不太清"到底怎么了"。不是懒，不是躺平，是转不动。\n\n像车挂着挡但轮子不走——油门踩了，就是不动。\n\n这种状态比焦虑更难受，因为连焦虑的方向都没有。'
+    }
+  };
+
+  var typeNames = { 'A': '领航型', 'B': '维持型', 'C': '负重型', 'D': '卡点型' };
+
+  // 从URL获取类型参数
+  function getTypeFromURL() {
+    var params = new URLSearchParams(window.location.search);
+    var type = params.get('type');
+    if (type && results[type]) return type;
+    return 'B'; // 默认维持型
+  }
+
+  var currentType = getTypeFromURL();
+  var r = results[currentType];
+
+  // 渲染结果
+  document.getElementById('resultTag').textContent = r.tag;
+  document.getElementById('resultInsight').innerHTML = r.insight.replace(/\n/g, '<br>');
+
+  // Toast
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg, duration) {
+    if (toastTimer) clearTimeout(toastTimer);
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    toastTimer = setTimeout(function() {
+      toastEl.classList.remove('show');
+    }, duration || 2000);
+  }
+
+  // 复制功能
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast('已复制，回微信发给我吧');
+    } catch (e) {
+      showToast('请长按复制或截图保存');
+    }
+    document.body.removeChild(textarea);
+  }
+
+  function copyResult() {
+    var typeName = typeNames[currentType];
+    var shareText = '我刚测了一下，中场状态是【' + typeName + '】。俊哥，帮我看看卡点在哪？';
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareText).then(function() {
+        showToast('已复制，回微信发给我吧');
+      }).catch(function() {
+        fallbackCopy(shareText);
+      });
+    } else {
+      fallbackCopy(shareText);
+    }
+  }
+
+  // 深度自检按钮（暂时跳转到占位页）
+  document.getElementById('btnDeep').addEventListener('click', function() {
+    window.location.href = 'deep-test.html';
+  });
+
+  // 复制按钮
+  document.getElementById('btnCopy').addEventListener('click', function() {
+    copyResult();
+  });
+
+})();
+</script>
+</body>
+</html>
