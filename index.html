@@ -1,6 +1,6 @@
 <!--
-此页面通过微信点对点私发，用户已是好友，CTA引导"把结果发给我"而非"加微信"。
-部署方式：将本文件上传至GitHub Pages或任意静态托管，获取公开链接后微信私发。
+中场扛事者·1分钟状态快测
+部署方式：GitHub Pages，获取公开链接后微信私发。
 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="format-detection" content="telephone=no">
-<title>中场经营者 · 1分钟状态测试</title>
+<title>中场扛事者 · 1分钟状态快测</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -113,85 +113,6 @@ body {
   margin-right: 4px;
 }
 
-/* 结果页 */
-.result-block {
-  display: none;
-  animation: fadeSlideIn 0.5s ease;
-}
-.result-block.active {
-  display: block;
-}
-.result-tag {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 20px;
-  text-align: center;
-}
-.result-insight {
-  font-size: 16px;
-  line-height: 1.8;
-  color: #444;
-  margin-bottom: 36px;
-  letter-spacing: 0.3px;
-}
-.result-divider {
-  height: 1px;
-  background: #e0ddd6;
-  margin: 28px 0;
-}
-
-/* CTA区 */
-.cta-hint {
-  font-size: 14px;
-  color: #aaa;
-  text-align: center;
-  margin-bottom: 14px;
-  line-height: 1.6;
-}
-.cta-btn {
-  display: block;
-  width: 100%;
-  min-height: 52px;
-  background: #2c2c2c;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 17px;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  -webkit-appearance: none;
-  font-family: inherit;
-  letter-spacing: 0.5px;
-  transition: opacity 0.15s;
-}
-.cta-btn:active {
-  opacity: 0.85;
-}
-
-/* Toast */
-.toast {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translateY(10px);
-  background: rgba(44, 44, 44, 0.92);
-  color: #fff;
-  padding: 14px 28px;
-  border-radius: 8px;
-  font-size: 15px;
-  white-space: nowrap;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s;
-}
-.toast.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) translateY(0);
-}
-
 /* 动画 */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(12px); }
@@ -216,99 +137,65 @@ body {
   <!-- 题目渲染区 -->
   <div id="questionsContainer"></div>
 
-  <!-- 结果页 -->
-  <div class="result-block" id="resultBlock">
-    <div class="result-tag" id="resultTag"></div>
-    <div class="result-insight" id="resultInsight"></div>
-    <div class="result-divider"></div>
-    <p class="cta-hint">这只是一张1分钟快照。完整的局势图，需要一次深度拆解才能拼出来。</p>
-    <button class="cta-btn" id="ctaBtn">把结果发给我，聊聊 →</button>
-  </div>
-
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
 (function() {
   var questions = [
     {
-      q: '最近你的"生活节奏"，更接近哪种状态？',
+      q: '过去一周，你早上醒来的第一反应通常是？',
       options: [
-        { letter: 'A', text: '有主线，忙但心里有数' },
-        { letter: 'B', text: '事很多，被推着走，还能应付' },
-        { letter: 'C', text: '每天都在灭火，但不知道火从哪来' },
-        { letter: 'D', text: '有点"空转"，忙了一天说不出干了啥' }
+        { letter: 'A', text: '知道今天要干什么，按计划来' },
+        { letter: 'B', text: '脑子里先过一遍待办，有点多但还行' },
+        { letter: 'C', text: '想到今天要面对的事，有点烦躁' },
+        { letter: 'D', text: '不太想起来，或者起来了也不知道该干嘛' }
       ]
     },
     {
-      q: '如果给现在的自己贴个标签，最接近哪个？',
+      q: '过去一个月，你主动做出的"为自己"的决定有几个？',
       options: [
-        { letter: 'A', text: '爬坡期（有方向，在往上走）' },
-        { letter: 'B', text: '平台期（维持着，不升不降）' },
-        { letter: 'C', text: '负重期（扛着很多事，有点吃力）' },
-        { letter: 'D', text: '卡点期（知道该变，但迈不出去）' }
+        { letter: 'A', text: '3个以上（比如换了晨跑路线、报了个课、拒绝了一次无效社交）' },
+        { letter: 'B', text: '1-2个（想做点什么，但大部分时间还是在应付）' },
+        { letter: 'C', text: '0个，但心里一直在想"该为自己做点什么了"' },
+        { letter: 'D', text: '没想过这个问题，或者想不起来' }
       ]
     },
     {
-      q: '你现在最担心"贬值"的是哪一样？',
+      q: '过去三个月，你因为"年龄/体力/代际差异"产生过焦虑吗？',
       options: [
-        { letter: 'A', text: '身体/精力' },
-        { letter: 'B', text: '手里的专业能力' },
-        { letter: 'C', text: '在行业里的位置/话语权' },
-        { letter: 'D', text: '好像都还行，没特别想过' }
+        { letter: 'A', text: '几乎没有，我觉得经验是优势' },
+        { letter: 'B', text: '偶尔有，但还在可控范围' },
+        { letter: 'C', text: '经常有，尤其看到年轻人/AI的时候' },
+        { letter: 'D', text: '持续焦虑，但说不清楚到底在怕什么' }
       ]
     },
     {
       q: '过去半年，你做过"完全为自己"的决定吗？',
       options: [
         { letter: 'A', text: '有，而且正在做' },
-        { letter: 'B', text: '想过，但时机不对' },
+        { letter: 'B', text: '想过，但觉得时机不对' },
         { letter: 'C', text: '发现大部分时间都在满足别人的期待' },
-        { letter: 'D', text: '想不起上次为自己选择是什么时候了' }
+        { letter: 'D', text: '想不起上次为自己做选择是什么时候了' }
       ]
     },
     {
-      q: '如果有人能帮你解决一个问题，你最想先解决哪个？',
+      q: '如果只能解决一个问题，你会先解决？',
       options: [
-        { letter: 'A', text: '时间不够用/效率太低' },
-        { letter: 'B', text: '下一步往哪走' },
-        { letter: 'C', text: '心里那股"说不出的累"' },
-        { letter: 'D', text: '现金流/资源不够' }
+        { letter: 'A', text: '时间不够/效率低（总觉得忙不完）' },
+        { letter: 'B', text: '方向不清（知道要变，但不知道往哪走）' },
+        { letter: 'C', text: '精力透支（心里那股说不出的累）' },
+        { letter: 'D', text: '资源不足（钱/人脉/机会不够）' }
       ]
     }
   ];
 
-  var results = {
-    'A': {
-      tag: '你的中场类型：领航型',
-      insight: '你现在手里有方向盘，也有路。这不容易——很多人到这个阶段，方向盘还在，但路已经模糊了。你的风险不是"走错"，而是"低估下一段路况的变化"。偶尔把导航缩放一下，看看前方有没有你没注意到的弯道。'
-    },
-    'B': {
-      tag: '你的中场类型：维持型',
-      insight: '维持，是这个阶段最常见的状态。不差，但有一个隐秘的代价——系统的惯性会悄悄吃掉你的选择权。你现在的牌面还行，但牌局在变。你感觉到了吗？那个"说不清但总觉得哪里不对"的地方，往往就是下一个破局点。'
-    },
-    'C': {
-      tag: '你的中场类型：负重型',
-      insight: '你现在的状态，像一艘满载的船。舵还在你手里，但吃水很深。你担心的其实不是方向，是这艘船还能不能扛住接下来的风浪。有意思的是——你填答案时最犹豫的那道题，往往就是真正的卡点。先卸哪一样，比往哪走更紧迫。'
-    },
-    'D': {
-      tag: '你的中场类型：卡点型',
-      insight: '你知道该变。但你不知道往哪变，或者知道了但发现迈不出去。这不是能力问题，是你被现在的结构锁住了脚步。空转的人不是没油，是传动轴卡住了。你得先找出卡住的那一颗螺丝，而不是猛踩油门。'
-    }
-  };
-
-  var answers = [];       // 每道题选的字母
+  var answers = [];
   var currentIndex = 0;
   var questionsContainer = document.getElementById('questionsContainer');
-  var resultBlock = document.getElementById('resultBlock');
   var progressArea = document.getElementById('progressArea');
   var progressLabel = document.getElementById('progressLabel');
   var progressFill = document.getElementById('progressFill');
-  var toastEl = document.getElementById('toast');
-  var toastTimer = null;
 
-  // 初始化渲染所有题目
   function renderQuestions() {
     var html = '';
     for (var i = 0; i < questions.length; i++) {
@@ -327,7 +214,6 @@ body {
     questionsContainer.innerHTML = html;
   }
 
-  // 显示第 n 题 (0-based)
   function showQuestion(index) {
     var allBlocks = questionsContainer.querySelectorAll('.question-block');
     for (var i = 0; i < allBlocks.length; i++) {
@@ -341,125 +227,39 @@ body {
     progressFill.style.width = (num / 5 * 100) + '%';
   }
 
-  // 判定结果
+  // 计分逻辑：严格按你的判定规则
   function determineResult() {
     var counts = { A: 0, B: 0, C: 0, D: 0 };
     for (var i = 0; i < answers.length; i++) {
       counts[answers[i]]++;
     }
 
-    var maxCount = 0;
-    var maxLetter = '';
-    var letters = ['A', 'B', 'C', 'D'];
-    for (var k = 0; k < letters.length; k++) {
-      if (counts[letters[k]] > maxCount) {
-        maxCount = counts[letters[k]];
-        maxLetter = letters[k];
-      }
+    // 卡点型优先判定：D≥2 或 B+D≥4
+    if (counts['D'] >= 2 || (counts['B'] + counts['D'] >= 4)) {
+      return 'D';
     }
-
-    // 检查平票
-    var tiedLetters = [];
-    for (var k = 0; k < letters.length; k++) {
-      if (counts[letters[k]] === maxCount) {
-        tiedLetters.push(letters[k]);
-      }
+    // 领航型：A≥3
+    if (counts['A'] >= 3) {
+      return 'A';
     }
-
-    if (tiedLetters.length === 1) return tiedLetters[0];
-
-    // 平票：Q2(索引1) 和 Q5(索引4) 权重加倍
-    var weighted = { A: 0, B: 0, C: 0, D: 0 };
-    for (var k = 0; k < letters.length; k++) {
-      weighted[letters[k]] = counts[letters[k]];
+    // 负重型：C≥3
+    if (counts['C'] >= 3) {
+      return 'C';
     }
-    // Q2 是索引1
-    weighted[answers[1]]++;
-    // Q5 是索引4
-    weighted[answers[4]]++;
-
-    var wMax = 0;
-    var wLetter = '';
-    for (var k = 0; k < letters.length; k++) {
-      if (weighted[letters[k]] > wMax) {
-        wMax = weighted[letters[k]];
-        wLetter = letters[k];
-      }
+    // 维持型：B≥3
+    if (counts['B'] >= 3) {
+      return 'B';
     }
-
-    // 再次检查平票
-    var wTied = [];
-    for (var k = 0; k < letters.length; k++) {
-      if (weighted[letters[k]] === wMax) {
-        wTied.push(letters[k]);
-      }
-    }
-
-    if (wTied.length === 1) return wLetter;
-
-    // 仍平票：Q2优先
-    return answers[1];
+    // 边缘情况：默认维持型
+    return 'B';
   }
 
-  // 显示结果
-  function showResult() {
-    var letter = determineResult();
-    var r = results[letter];
-
-    progressArea.style.display = 'none';
-    questionsContainer.style.display = 'none';
-
-    document.getElementById('resultTag').textContent = r.tag;
-    document.getElementById('resultInsight').textContent = r.insight;
-    resultBlock.classList.add('active');
-
-    // 存储当前类型，供CTA使用
-    resultBlock.setAttribute('data-type', letter);
+  // 答完跳转结果页
+  function goToResult() {
+    var typeLetter = determineResult();
+    window.location.href = 'result.html?type=' + typeLetter;
   }
 
-  // Toast
-  function showToast(msg, duration) {
-    if (toastTimer) clearTimeout(toastTimer);
-    toastEl.textContent = msg;
-    toastEl.classList.add('show');
-    toastTimer = setTimeout(function() {
-      toastEl.classList.remove('show');
-    }, duration || 2000);
-  }
-
-  // 降级复制
-  function fallbackCopy(text) {
-    var textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    textarea.style.top = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-    try {
-      document.execCommand('copy');
-      showToast('已复制，回微信发给我吧');
-    } catch (e) {
-      showToast('请截图或长按保存结果');
-    }
-    document.body.removeChild(textarea);
-  }
-
-  // CTA 按钮事件
-  document.getElementById('ctaBtn').addEventListener('click', function() {
-    var typeLetter = resultBlock.getAttribute('data-type');
-    var typeName = '';
-    if (typeLetter === 'A') typeName = '领航型';
-    else if (typeLetter === 'B') typeName = '维持型';
-    else if (typeLetter === 'C') typeName = '负重型';
-    else if (typeLetter === 'D') typeName = '卡点型';
-
-    var shareText = '测了一下，我是【' + typeName + '】。俊哥，帮我看看卡点在哪？';
-    fallbackCopy(shareText);
-  });
-
-  // 查找最近的 .option-btn 祖先 (兼容无 closest 的旧 WebView)
   function findOptionBtn(el) {
     while (el && el !== questionsContainer) {
       if (el.classList && el.classList.contains('option-btn')) return el;
@@ -468,26 +268,24 @@ body {
     return null;
   }
 
-  // 选项点击事件 (事件委托)
   questionsContainer.addEventListener('click', function(e) {
     var btn = findOptionBtn(e.target);
     if (!btn) return;
 
     var index = parseInt(btn.getAttribute('data-index'), 10);
     var letter = btn.getAttribute('data-letter');
-    if (index !== currentIndex) return; // 防止重复点击已过题目
+    if (index !== currentIndex) return;
 
     answers[index] = letter;
     currentIndex++;
 
     if (currentIndex >= questions.length) {
-      showResult();
+      goToResult();
     } else {
       showQuestion(currentIndex);
     }
   });
 
-  // 启动
   renderQuestions();
   showQuestion(0);
 })();
