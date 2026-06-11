@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>深度自检 · 即将上线</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: #f9f8f6;
+  color: #2c2c2c;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  padding: 40px 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.icon {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.desc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #fff;
+  color: #2c2c2c;
+  border: 1px solid #e0ddd6;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-family: inherit;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.back-btn:active {
+  background: #f0ede7;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="icon">🔍</div>
+  <h1 class="title">深度自检正在打磨中</h1>
+  <p class="desc">5分钟版本的深度诊断正在最后调试。<br>完成后会第一时间通知你。<br><br>现在可以先把快测结果发给我，<br>我们一对一聊聊。</p>
+  <a class="back-btn" href="result.html" onclick="history.back();return false;">← 返回我的结果</a>
+</div>
+
+</body>
+</html>
