@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>人生中场 · 60秒快测</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  background: #f9f8f6;
+  color: #2c2c2c;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  padding: 40px 24px;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.brand {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #999;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 44px;
+}
+
+.start-btn {
+  display: inline-block;
+  padding: 16px 56px;
+  background: #2c2c2c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-appearance: none;
+  font-family: inherit;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.start-btn:active { opacity: 0.8; }
+
+.foot {
+  margin-top: 32px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="brand">人 生 中 场</div>
+  <h1 class="title">你现在是"累"，<br>还是"系统在亏空"？</h1>
+  <p class="subtitle">5道题，1分钟。<br>先不急着改变什么，<br>我们先给你一个判断。</p>
+  <!-- ⚠️ 把下面的 quiz.html 改成你5题快测的实际入口文件名 -->
+  <a class="start-btn" href="quiz.html">开 始</a>
+  <div class="foot">主理人 · 俊哥</div>
+</div>
+
+</body>
+</html>
