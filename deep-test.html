@@ -2,87 +2,360 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>深度自检 · 即将上线</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生中场 · 战略诊断启动</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --bg:#f4f1ea;        /* 米白 */
+    --card:#fbf9f4;
+    --ink:#33312e;       /* 炭灰 */
+    --ink-soft:#6b6862;
+    --line:#e0dbd0;
+    --accent:#4a4845;
+    --accent-soft:#8a8madededed;
+    --warm:#a8714a;      /* 暖棕点缀 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.8;font-size:16px;padding:0 0 60px;
+  }
+  .wrap{max-width:620px;margin:0 auto;padding:0 20px;}
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-  background: #f9f8f6;
-  color: #2c2c2c;
-  font-size: 16px;
-  line-height: 1.6;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  padding: 40px 20px;
-}
+  /* 开场 */
+  header{padding:48px 0 32px;text-align:center;}
+  header .tag{font-size:13px;letter-spacing:3px;color:var(--warm);margin-bottom:14px;}
+  header h1{font-size:24px;font-weight:600;letter-spacing:1px;margin-bottom:24px;}
+  .intro{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 20px;text-align:left;font-size:15px;color:var(--ink-soft);line-height:1.9;
+  }
+  .intro p{margin-bottom:10px;}
+  .intro .promise{color:var(--warm);font-weight:600;margin-top:6px;margin-bottom:0;}
 
-.container {
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  animation: fadeSlideIn 0.5s ease;
-}
+  /* 题卡 */
+  .q{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 20px;margin-top:18px;
+  }
+  .q .num{font-size:13px;color:var(--warm);font-weight:700;letter-spacing:1px;}
+  .q .title{font-size:16px;font-weight:600;margin:6px 0 4px;line-height:1.7;}
+  .q .hint{font-size:13px;color:var(--ink-soft);margin-bottom:14px;line-height:1.7;}
+  .q .sub{font-size:15px;font-weight:600;margin:16px 0 6px;color:var(--ink);}
 
-.icon {
-  font-size: 48px;
-  margin-bottom: 24px;
-}
+  /* 选项 */
+  .opt{
+    display:flex;align-items:flex-start;gap:10px;padding:11px 13px;margin-bottom:8px;
+    border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;
+    font-size:15px;transition:all .15s;
+  }
+  .opt:active{transform:scale(.99);}
+  .opt input{margin-top:5px;accent-color:var(--warm);transform:scale(1.15);}
+  .opt.checked{border-color:var(--warm);background:#fbf4ee;}
+  .opt span{flex:1;}
 
-.title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 16px;
-}
+  /* 输入 */
+  input[type="text"],textarea{
+    width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;
+    padding:11px 13px;font-size:15px;font-family:inherit;color:var(--ink);resize:vertical;
+    line-height:1.7;
+  }
+  input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--warm);}
+  textarea{min-height:64px;}
+  .inline-label{font-size:14px;color:var(--ink-soft);margin:12px 0 6px;}
 
-.desc {
-  font-size: 16px;
-  color: #666;
-  line-height: 1.8;
-  margin-bottom: 36px;
-}
+  /* 提交区 */
+  .submit-area{margin-top:30px;text-align:center;}
+  .btn{
+    display:inline-block;width:100%;background:var(--accent);color:#fbf9f4;
+    border:none;border-radius:12px;padding:17px;font-size:17px;font-weight:600;
+    letter-spacing:1px;cursor:pointer;font-family:inherit;transition:all .15s;
+  }
+  .btn:active{transform:scale(.99);background:#2b2926;}
+  .btn-note{font-size:13px;color:var(--ink-soft);margin-top:12px;line-height:1.8;}
 
-.back-btn {
-  display: inline-block;
-  padding: 14px 32px;
-  background: #fff;
-  color: #2c2c2c;
-  border: 1px solid #e0ddd6;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  -webkit-appearance: none;
-  font-family: inherit;
-  text-decoration: none;
-  transition: background 0.15s;
-}
-.back-btn:active {
-  background: #f0ede7;
-}
+  /* 复制成功提示 */
+  .toast{
+    position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);
+    background:var(--accent);color:#fff;padding:14px 24px;border-radius:30px;
+    font-size:14px;opacity:0;pointer-events:none;transition:all .3s;z-index:99;
+    box-shadow:0 6px 24px rgba(0,0,0,.18);max-width:90%;text-align:center;line-height:1.6;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+  footer{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:40px;letter-spacing:1px;}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="container">
-  <div class="icon">🔍</div>
-  <h1 class="title">深度自检正在打磨中</h1>
-  <p class="desc">5分钟版本的深度诊断正在最后调试。<br>完成后会第一时间通知你。<br><br>现在可以先把快测结果发给我，<br>我们一对一聊聊。</p>
-  <a class="back-btn" href="result.html" onclick="history.back();return false;">← 返回我的结果</a>
+  <header>
+    <div class="tag">人 生 中 场</div>
+    <h1>战略诊断 · 启动</h1>
+    <div class="intro">
+      <p>这份问卷，帮你生成一份《0.5版局势拆解草图》——它不是结论报告，是一份为后续深度对话准备的结构化起点（约10分钟）。</p>
+      <p>里面有几处勾选、几处填空。勾选凭直觉就行；填空不用写漂亮，想到什么写什么，哪怕几个字。它不是考试，是帮你把心里那团说不清的东西，先理出个头绪。</p>
+      <p class="promise">发过来后，你会收到一份针对你局势的 0.5 版拆解。</p>
+    </div>
+  </header>
+
+  <form id="form">
+
+    <!-- Q1 -->
+    <div class="q">
+      <div class="num">Q1 · 多选</div>
+      <div class="title">目前你承担的主要社会角色、家庭角色有哪些？</div>
+      <div class="opt"><input type="checkbox" name="q1" value="企业高管/中层管理者"><span>企业高管 / 中层管理者</span></div>
+      <div class="opt"><input type="checkbox" name="q1" value="专业技术岗"><span>专业技术岗</span></div>
+      <div class="opt"><input type="checkbox" name="q1" value="自主经营者/创业者"><span>自主经营者 / 创业者</span></div>
+      <div class="opt"><input type="checkbox" name="q1" value="已退休/半退休"><span>已退休 / 半退休</span></div>
+      <div class="opt"><input type="checkbox" name="q1" value="全职照顾家庭"><span>全职照顾家庭</span></div>
+      <div class="inline-label">其它（可填）：</div>
+      <input type="text" name="q1_other" placeholder="">
+    </div>
+
+    <!-- Q2 -->
+    <div class="q">
+      <div class="num">Q2 · 单选 + 必填</div>
+      <div class="title">今天最想聚焦哪个角色来谈？</div>
+      <div class="hint">从上面选一个</div>
+      <input type="text" name="q2_role" placeholder="想聚焦的角色">
+      <div class="inline-label">为什么是它？（必填，哪怕一句话）</div>
+      <textarea name="q2_why" placeholder=""></textarea>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q">
+      <div class="num">Q3 · 单选</div>
+      <div class="title">在这个角色上，你现在整体的感受更接近哪一边？</div>
+      <div class="opt"><input type="radio" name="q3" value="消耗远大于滋养"><span>消耗远大于滋养</span></div>
+      <div class="opt"><input type="radio" name="q3" value="大致平衡"><span>大致平衡</span></div>
+      <div class="opt"><input type="radio" name="q3" value="滋养大于消耗"><span>滋养大于消耗</span></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q">
+      <div class="num">Q4 · 填空</div>
+      <div class="title">过去两周，这个角色最"消耗你"的一件事是？</div>
+      <div class="hint">写具体事件，一句话、几个字都行，别求全。</div>
+      <textarea name="q4" placeholder=""></textarea>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q">
+      <div class="num">Q5 · 填空（可填"无"）</div>
+      <div class="title">过去两周，这个角色最让你有点力气的一件事是？</div>
+      <div class="hint">真没有，就填"无"，没关系。</div>
+      <textarea name="q5" placeholder=""></textarea>
+    </div>
+
+    <!-- Q6 拆分 -->
+    <div class="q">
+      <div class="num">Q6 · 填空</div>
+      <div class="title">这个状态，持续多久了？</div>
+      <input type="text" name="q6_long" placeholder="比如：半年 / 两三年 / 说不清">
+      <div class="sub">回头想，它最早是从哪件事、哪个节点开始的？</div>
+      <textarea name="q6_start" placeholder=""></textarea>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q">
+      <div class="num">Q7 · 填空</div>
+      <div class="title">你试过哪些方法想改变它？结果怎样？</div>
+      <textarea name="q7" placeholder=""></textarea>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q">
+      <div class="num">Q8 · 勾选 + 一句补充</div>
+      <div class="title">你现在最可以调动的资源有哪些？</div>
+      <div class="hint">可多选</div>
+      <div class="opt"><input type="checkbox" name="q8" value="经验/技能"><span>经验 / 技能</span></div>
+      <div class="opt"><input type="checkbox" name="q8" value="心态/韧性"><span>心态 / 韧性</span></div>
+      <div class="opt"><input type="checkbox" name="q8" value="时间"><span>时间</span></div>
+      <div class="opt"><input type="checkbox" name="q8" value="积蓄"><span>积蓄</span></div>
+      <div class="opt"><input type="checkbox" name="q8" value="人脉"><span>人脉</span></div>
+      <div class="inline-label">其它（可填）：</div>
+      <input type="text" name="q8_other" placeholder="">
+      <div class="inline-label">补充一句（最想调动的那个）：</div>
+      <input type="text" name="q8_note" placeholder="">
+    </div>
+
+    <!-- Q9 -->
+    <div class="q">
+      <div class="num">Q9 · 勾选 + 一句补充</div>
+      <div class="title">你最大的现实约束是什么？</div>
+      <div class="inline-label">先勾它的性质：</div>
+      <div class="opt"><input type="radio" name="q9_type" value="可改变"><span>可改变</span></div>
+      <div class="opt"><input type="radio" name="q9_type" value="暂时不可改变"><span>暂时不可改变</span></div>
+      <div class="opt"><input type="radio" name="q9_type" value="不确定"><span>不确定</span></div>
+      <div class="inline-label">再补一句（它具体是什么）：</div>
+      <textarea name="q9_note" placeholder=""></textarea>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q">
+      <div class="num">Q10 · 填空</div>
+      <div class="title">外部变化（AI / 行业 / 经济）对你冲击最大的，具体是哪一项？</div>
+      <textarea name="q10" placeholder=""></textarea>
+    </div>
+
+    <!-- Q11 -->
+    <div class="q">
+      <div class="num">Q11 · 填空</div>
+      <div class="title">如果用一句话描述你现阶段的人生状态，会是？</div>
+      <div class="hint">示例："知道要变，但不知道从哪动"</div>
+      <textarea name="q11" placeholder=""></textarea>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q">
+      <div class="num">Q12 · 填空</div>
+      <div class="title">如果什么都不变，一年后你觉得会是什么状态？</div>
+      <textarea name="q12" placeholder=""></textarea>
+    </div>
+
+    <!-- Q13 -->
+    <div class="q">
+      <div class="num">Q13 · 单选</div>
+      <div class="title">如果只能先动一个方向，你最想先处理的是？</div>
+      <div class="opt"><input type="radio" name="q13" value="事业/工作结构"><span>事业 / 工作结构</span></div>
+      <div class="opt"><input type="radio" name="q13" value="自我价值感"><span>自我价值感</span></div>
+      <div class="opt"><input type="radio" name="q13" value="家庭关系"><span>家庭关系</span></div>
+      <div class="opt"><input type="radio" name="q13" value="精力与健康"><span>精力与健康</span></div>
+      <div class="opt"><input type="radio" name="q13" value="暂时说不清楚"><span>暂时说不清楚</span></div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="q">
+      <div class="num">Q14 · 多选（最多2项）+ 补充</div>
+      <div class="title">你希望这份诊断最终帮你回答什么问题？</div>
+      <div class="hint">最多选 2 项</div>
+      <div class="opt"><input type="checkbox" name="q14" value="接下来三年的方向选择"><span>接下来三年的方向选择</span></div>
+      <div class="opt"><input type="checkbox" name="q14" value="优先级结构的重排"><span>优先级结构的重排</span></div>
+      <div class="opt"><input type="checkbox" name="q14" value="如何调整节奏与边界，避免长期无盈余运行"><span>如何调整节奏与边界，避免长期"无盈余运行"</span></div>
+      <div class="opt"><input type="checkbox" name="q14" value="如何顺应外部变化调整"><span>如何顺应外部变化调整</span></div>
+      <div class="opt"><input type="checkbox" name="q14" value="最该先解决的精力与恢复"><span>最该先解决的精力与恢复</span></div>
+      <div class="inline-label">如果只能带走一句话，我希望它是：</div>
+      <textarea name="q14_one" placeholder=""></textarea>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q">
+      <div class="num">Q15 · 选填</div>
+      <div class="title">还有什么你觉得重要、但问卷没问到的？</div>
+      <textarea name="q15" placeholder="选填"></textarea>
+    </div>
+
+    <div class="submit-area">
+      <button type="button" class="btn" onclick="copyAll()">复制我的答案，发给俊哥</button>
+      <div class="btn-note">点击后内容会自动复制 → 打开微信粘贴发给俊哥<br>你会收到一份针对你局势的 0.5 版拆解。</div>
+    </div>
+
+  </form>
+
+  <footer>人生中场 · 战略诊断　|　关注俊哥，陪你看清路慢慢走</footer>
 </div>
 
+<div class="toast" id="toast"></div>
+
+<script>
+  // 选项高亮
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.addEventListener('click',function(){
+      var inp=o.querySelector('input');
+      if(inp.type==='radio'){
+        var grp=document.querySelectorAll('input[name="'+inp.name+'"]');
+        grp.forEach(function(g){g.closest('.opt').classList.remove('checked');});
+      }
+      setTimeout(function(){
+        o.classList.toggle('checked',inp.checked);
+        // radio: 同组只亮一个
+        if(inp.type==='radio'&&inp.checked){
+          document.querySelectorAll('input[name="'+inp.name+'"]').forEach(function(g){
+            g.closest('.opt').classList.toggle('checked',g.checked);
+          });
+        }
+      },0);
+    });
+  });
+
+  function getChecked(name){
+    var arr=[];
+    document.querySelectorAll('input[name="'+name+'"]:checked').forEach(function(i){arr.push(i.value);});
+    return arr.join('、');
+  }
+  function getRadio(name){
+    var el=document.querySelector('input[name="'+name+'"]:checked');
+    return el?el.value:'';
+  }
+  function v(name){var el=document.querySelector('[name="'+name+'"]');return el?el.value.trim():'';}
+  function line(val){return val?val:'（未填）';}
+
+  function copyAll(){
+    var q1=getChecked('q1'); var q1o=v('q1_other'); if(q1o) q1=q1?(q1+'、'+q1o):q1o;
+    var q8=getChecked('q8'); var q8o=v('q8_other'); if(q8o) q8=q8?(q8+'、'+q8o):q8o;
+
+    var t=
+"【人生中场·15题深度诊断·用户提交】\n"+
+"==============================\n\n"+
+"Q1 承担的角色：" + line(q1) + "\n\n"+
+"Q2 聚焦角色：" + line(v('q2_role')) + "\n"+
+"   为什么是它：" + line(v('q2_why')) + "\n\n"+
+"Q3 消耗/滋养感受：" + line(getRadio('q3')) + "\n\n"+
+"Q4 最消耗的一件事：" + line(v('q4')) + "\n\n"+
+"Q5 最有力气的一件事：" + line(v('q5')) + "\n\n"+
+"Q6 状态持续多久：" + line(v('q6_long')) + "\n"+
+"   从哪个节点开始：" + line(v('q6_start')) + "\n\n"+
+"Q7 试过的方法及结果：" + line(v('q7')) + "\n\n"+
+"Q8 可调动的资源：" + line(q8) + "\n"+
+"   最想调动的：" + line(v('q8_note')) + "\n\n"+
+"Q9 最大现实约束·性质：" + line(getRadio('q9_type')) + "\n"+
+"   具体是什么：" + line(v('q9_note')) + "\n\n"+
+"Q10 外部变化冲击最大项：" + line(v('q10')) + "\n\n"+
+"Q11 一句话描述现状：" + line(v('q11')) + "\n\n"+
+"Q12 不变的话一年后：" + line(v('q12')) + "\n\n"+
+"Q13 最想先动的方向：" + line(getRadio('q13')) + "\n\n"+
+"Q14 希望诊断回答的问题：" + line(getChecked('q14')) + "\n"+
+"   只带走一句话：" + line(v('q14_one')) + "\n\n"+
+"Q15 补充：" + line(v('q15')) + "\n\n"+
+"==============================\n"+
+"【指令】请基于以上自白，调用模块五理论框架，输出一份《0.5版局势拆解草图》。";
+
+    // 必填校验：Q2为什么
+    if(!v('q2_why')){
+      showToast('Q2"为什么是它"是必填的\n哪怕一句话，帮你看得更准');
+      document.querySelector('[name="q2_why"]').focus();
+      return;
+    }
+
+    copyText(t);
+  }
+
+  function copyText(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        showToast('已复制 ✓\n打开微信，粘贴发给俊哥');
+      }).catch(function(){fallbackCopy(text);});
+    }else{fallbackCopy(text);}
+  }
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');showToast('已复制 ✓\n打开微信，粘贴发给俊哥');}
+    catch(e){showToast('复制失败，请长按选中文本手动复制');}
+    document.body.removeChild(ta);
+  }
+
+  var toastTimer;
+  function showToast(msg){
+    var el=document.getElementById('toast');
+    el.innerText=msg;el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){el.classList.remove('show');},2600);
+  }
+</script>
 </body>
 </html>
