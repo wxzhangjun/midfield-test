@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!--
+  人生中场 · 说明页 v4（种子测试版）  2026-09-06
+  相对 v3 的改动（视觉 + 流程说明）：
+  1. Hero 主次倒置：主按钮「先了解这是什么」（往下滚），「直接领局势轮廓」降为次要小字——降低误点直接跳问卷的风险
+  2. 「适合/不适合」两列对比块：内联 grid 改成 .fit-grid 类，移动端塌成单列（原 1fr 1fr 手机端不塌，文字憋屈）
+  3. 怎么走·第2步补「交付方式」说明：填完问卷复制答卷发我，88 元交付前单独确认（当下无后台，人工接）
+  承自 v3（未动）：镜子去重 / 报告约1200字 / 四维度02措辞 / 方法论不铺满 / 俊哥是谁提前（信任先行）
+  问卷/部署链接：https://wxzhangjun.github.io/midfield-test/
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="把你当下这盘局势，拆开来看一遍。15 题问卷，48 小时内收到你的 0.5 版局势轮廓。">
+<meta property="og:title" content="人生中场 · 把你当下这盘局势拆开来看一遍">
+<meta property="og:description" content="15 题问卷，48 小时内收到你的 0.5 版局势轮廓。88 元起，可全额抵扣。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wxzhangjun.github.io/midfield-test/zhongchang-intro/">
+<title>人生中场</title>
+<style>
+  /* ============ 设计变量 ============ */
+  :root {
+    --bg: #FAFAF8;          /* 暖白底，非纯白 */
+    --accent: #8B4513;      /* 强调色·深赭石（备选：墨青 #1A3A4A，改这一行即可整体换色） */
+    --ink: #23221E;         /* 正文·暖黑 */
+    --ink-soft: #55534E;    /* 次级文字 */
+    --ink-mute: #8A8782;    /* 辅助信息 */
+    --card: #FFFFFF;        /* 卡片底 */
+    --card-muted: #F2EFE9;  /* 引用块/浅灰底 */
+    --line: #E8E4DC;        /* 分割线 */
+    --maxw: 780px;          /* 正文最大宽度 */
+
+    /* Hero 暗底色系（第0屏） */
+    --hero-bg: #1E1813;          /* 深暖棕黑·沉静 */
+    --hero-ink: #F2ECE2;         /* 暖白·非纯白 */
+    --hero-soft: rgba(242,236,226,0.82);
+    --hero-mute: rgba(242,236,226,0.60);
+    --hero-light: #D69B5E;       /* 光束·暖赭金 */
+  }
+
+  /* ============ 基础 ============ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============ 导航栏（模块0） ============ */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background .3s ease, border-color .3s ease;
+  }
+  .nav.scrolled {
+    background: rgba(250, 250, 248, 0.88);
+    backdrop-filter: saturate(160%) blur(10px);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--hero-ink);
+    transition: color .3s ease;
+  }
+  .nav.scrolled .nav-brand { color: var(--ink); }
+  .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--hero-ink);
+    text-decoration: none;
+    padding: 9px 18px;
+    border: 1px solid rgba(242, 236, 226, 0.5);
+    border-radius: 999px;
+    transition: background .2s ease, color .2s ease, border-color .3s ease;
+  }
+  .nav-link:hover { background: var(--hero-ink); color: var(--hero-bg); }
+  .nav.scrolled .nav-link { color: var(--accent); border-color: var(--accent); }
+  .nav.scrolled .nav-link:hover { background: var(--accent); color: #fff; }
+
+  /* ============ 布局 ============ */
+  .section {
+    padding: 96px 24px;
+    scroll-margin-top: 72px; /* 锚点跳转避开固定导航 */
+  }
+  .container {
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .eyebrow {
+    display: block;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: clamp(28px, 5vw, 36px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 32px;
+  }
+
+  /* ============ 第0屏 · Hero（封面） ============ */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hero-bg);
+    color: var(--hero-ink);
+    overflow: hidden;
+    text-align: center;
+  }
+  /* 棋盘 / 地图网格 */
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(242, 236, 226, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242, 236, 226, 0.045) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  /* 顶部一束柔光 */
+  .hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 12%, rgba(214, 155, 94, 0.30), transparent 68%);
+  }
+  /* 落在“棋盘”中央的光斑 */
+  .hero-glow {
+    position: absolute;
+    left: 50%; top: 54%;
+    width: 620px; height: 340px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse at center, rgba(214, 155, 94, 0.15), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    padding: 0 24px;
+    max-width: 760px;
+  }
+  .hero-title {
+    font-size: clamp(48px, 9vw, 84px);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.15;
+    margin-bottom: 26px;
+  }
+  .hero-tagline {
+    font-size: clamp(18px, 2.6vw, 22px);
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--hero-soft);
+    margin-bottom: 48px;
+    letter-spacing: 0.02em;
+  }
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+  .hero-btn {
+    display: inline-block;
+    background: var(--hero-ink);
+    color: var(--hero-bg);
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 18px 56px;
+    border-radius: 999px;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .hero-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+  .hero-scroll {
+    color: var(--hero-mute);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: color .2s ease;
+  }
+  .hero-scroll .arrow {
+    font-size: 18px;
+    line-height: 1;
+    animation: heroBounce 2.2s ease-in-out infinite;
+  }
+  .hero-scroll:hover { color: var(--hero-ink); }
+  @keyframes heroBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  /* ============ 模块一 · 镜子 ============ */
+  .mirror {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+  .mirror-line {
+    font-size: clamp(27px, 4.6vw, 38px);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 34px;
+    letter-spacing: 0.01em;
+  }
+  .mirror-line:last-of-type { margin-bottom: 72px; }
+  .mirror-bridge {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    max-width: 34em;
+  }
+  .mirror-bridge em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* ============ 模块二 · 这是什么 ============ */
+  .positioning { font-size: 18px; color: var(--ink); }
+  .positioning p { margin-bottom: 16px; }
+  .positioning .lead { font-size: 20px; font-weight: 500; color: var(--ink); }
+  .dims {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 44px 0;
+  }
+  .dim {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 24px;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .dim .no {
+    display: block;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+  .why-system {
+    font-size: 16px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+  }
+  /* 适合/不适合 两列筛选（移动端塌成单列） */
+  .fit-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ============ 模块三 · 怎么走 ============ */
+  .steps { list-style: none; }
+  .step {
+    position: relative;
+    padding: 0 0 44px 48px;
+    border-left: 1px solid var(--line);
+    margin-left: 16px;
+  }
+  .step:last-child { padding-bottom: 0; }
+  .step::before {
+    content: attr(data-no);
+    position: absolute;
+    left: -17px; top: 0;
+    width: 33px; height: 33px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .step-tag {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .step-desc { font-size: 16px; color: var(--ink-soft); }
+  .step-desc li { list-style: none; margin-bottom: 4px; position: relative; padding-left: 16px; }
+  .step-desc li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-mute); }
+  .step-desc strong { color: var(--ink); font-weight: 600; }
+  .step-pricing {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--card-muted);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .free-note {
+    margin-top: 44px;
+    padding: 20px 24px;
+    background: var(--card-muted);
+    border-radius: 12px;
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  /* 模块三中部行动入口 */
+  .mid-cta {
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  /* ============ 模块四 · 快照预览 ============ */
+  .quote {
+    position: relative;
+    background: var(--card-muted);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px 14px 14px 4px;
+    padding: 32px 28px 32px 32px;
+    margin-bottom: 24px;
+  }
+  .quote-mark {
+    display: block;
+    font-size: 56px;
+    line-height: 0.6;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.35;
+    margin-bottom: 18px;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .quote-text {
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+  .report-meta {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 6px 0 24px;
+    line-height: 1.7;
+  }
+  .quote-credit {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+
+  /* ============ 模块五 · 问卷预览 ============ */
+  .preview-note {
+    font-size: 15px;
+    color: var(--ink-mute);
+    margin: -16px 0 28px;
+  }
+  .qcard {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .qcard .q-no {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .qcard .q-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .qcard .q-note {
+    font-size: 15px;
+    color: var(--ink-mute);
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ============ 模块六 · 俊哥是谁 ============ */
+  .about p { font-size: 17px; margin-bottom: 24px; }
+  .about p:first-child { font-size: 20px; font-weight: 700; }
+  .about-sign {
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+  .about-sign .name { font-size: 20px; font-weight: 700; }
+  .about-sign .role { font-size: 15px; font-weight: 300; color: var(--ink-mute); margin-top: 4px; }
+
+  /* ============ 模块七 · 行动入口 ============ */
+  .cta { text-align: center; }
+  .cta-title {
+    font-size: clamp(28px, 5vw, 36px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+  .cta-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin-bottom: 40px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 18px 52px;
+    border-radius: 999px;
+    min-height: 48px;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .cta-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+  .cta-btn--ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .cta-btn--ghost:hover { background: var(--accent); color: #fff; }
+  .cta-fine {
+    margin-top: 24px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--ink-mute);
+  }
+
+  /* ============ 进入视口动效 ============ */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .js .reveal.in-view { opacity: 1; transform: none; }
+
+  /* ============ 无障碍：减少动效 ============ */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .hero-scroll .arrow { animation: none !important; }
+  }
+
+  /* ============ 响应式 ============ */
+  @media (max-width: 560px) {
+    .dims { grid-template-columns: 1fr; }
+    .fit-grid { grid-template-columns: 1fr; }
+    .section { padding: 80px 22px; }
+    .mirror { padding-top: 110px; padding-bottom: 96px; }
+    .cta-btn { width: 100%; padding-left: 24px; padding-right: 24px; }
+    /* Hero 移动端专属排版 */
+    .hero-title { font-size: clamp(42px, 13vw, 58px); letter-spacing: 0.05em; }
+    .hero-tagline { font-size: 18px; line-height: 1.75; margin-bottom: 40px; }
+    .hero-btn { width: 100%; max-width: 320px; padding-left: 24px; padding-right: 24px; }
+    .hero-glow { width: 340px; height: 240px; }
+    .quote { padding: 26px 22px 26px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ 模块0 · 导航栏 ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">人生中场</span>
+    <a class="nav-link" href="#start">领取局势轮廓</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ 第0屏 · Hero（封面） ============ -->
+  <section class="hero" id="top">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <h1 class="hero-title">人生中场</h1>
+      <p class="hero-tagline">把你当下这盘局势，拆开来看一遍</p>
+      <div class="hero-actions">
+        <a class="hero-btn" href="#mirror">先了解这是什么</a>
+        <a class="hero-scroll" href="https://wxzhangjun.github.io/midfield-test/">直接领局势轮廓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块一 · 镜子 ============ -->
+  <section class="section mirror reveal" id="mirror">
+    <div class="container">
+      <p class="mirror-line">账上还有钱，但不知道能撑多久。</p>
+      <p class="mirror-line">每天都在动，但不知道在往哪里走。</p>
+      <p class="mirror-line">对外永远积极，对内说不清哪里出了问题。</p>
+      <p class="mirror-line">以前那套打法，越使越费劲。</p>
+      <p class="mirror-line">想转，但不知道往哪转，也不确定自己还有没有牌。</p>
+      <p class="mirror-line">家里、生意、父母、孩子——哪一头都不敢松。</p>
+      <p class="mirror-bridge"><em>如果你读到这里，有哪怕一句让你停了一下——这份东西是写给你的。</em></p>
+    </div>
+  </section>
+
+  <!-- ============ 模块二 · 俊哥是谁（提前） ============ -->
+  <section class="section reveal" id="who">
+    <div class="container">
+      <span class="eyebrow">俊哥是谁</span>
+      <div class="about">
+        <p>地产 20 年，科创咨询与私董会 10 年。</p>
+        <p>前 20 年我在地产行业做到了「快」——看过无数高楼平地起，也见过太多人在欲望的过山车上失控。那时以为速度就是答案。</p>
+        <p>后来我做私董会顾问，接触了数百位创始人。我见过一位案主想同时杀进三个赛道，三年后发来的是退租合同。那一刻我明白了：地产算的是钢筋承重，人生算的是认知承重。</p>
+        <p>我自己也在中场。戒掉 25 年的烟，开始打坐，近五年减掉接近 20 斤。这些不是励志故事，是我用来提醒自己的证据：系统的调整是可能的，但它需要先把局势看清楚。</p>
+        <p>这就是我做这件事的原因。</p>
+      </div>
+      <div class="about-sign">
+        <div class="name">俊哥</div>
+        <div class="role">人生中场 主理人 · 同路人</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块三 · 这是什么（方法论 + 筛选） ============ -->
+  <section class="section reveal" id="what">
+    <div class="container">
+      <span class="eyebrow">这是什么</span>
+      <h2 class="section-title">把这盘局势，拆开来看</h2>
+      <div class="positioning">
+        <p class="lead">「人生中场」不是咨询，不给你一套解法。</p>
+        <p>它做的只有一件事：帮你把当下这盘局势，系统地拆开来看一遍。</p>
+        <p>看清楚了，下一步怎么走，是你自己的事。</p>
+        <p style="margin-top: 24px; padding: 20px 24px; background: var(--card-muted); border-radius: 10px; font-size: 16px; color: var(--ink-soft); border-left: 3px solid var(--accent);">
+          <strong style="color: var(--ink);">传统咨询</strong>：给你10条建议，每条都对，每条都做不到。<br>
+          <strong style="color: var(--ink);">人生中场</strong>：只给你<strong style="color: var(--accent);">1个行动建议</strong>——基于你当下的局势，最值得先动的那一步。
+        </p>
+      </div>
+
+      <div class="dims">
+        <div class="dim"><span class="no">01</span>事业 / 经营结构<span style="display:block; margin-top:8px; font-size:14px; font-weight:400; color:var(--ink-soft);">不是看利润表，是看你的业务模式是否还适配现在的市场节奏</span></div>
+        <div class="dim"><span class="no">02</span>家庭关系与角色<span style="display:block; margin-top:8px; font-size:14px; font-weight:400; color:var(--ink-soft);">你在家里承担的角色，是滋养你，还是在消耗你？</span></div>
+        <div class="dim"><span class="no">03</span>资产与现金流压力<span style="display:block; margin-top:8px; font-size:14px; font-weight:400; color:var(--ink-soft);">算一笔账：如果现有收入停三个月，哪些支出是刚性的？</span></div>
+        <div class="dim"><span class="no">04</span>子女教育与代际负担<span style="display:block; margin-top:8px; font-size:14px; font-weight:400; color:var(--ink-soft);">你给孩子规划的路径，是你真正认同的，还是"大家都这么做"？</span></div>
+      </div>
+
+      <div class="fit-grid">
+        <div style="background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 12px; letter-spacing: 0.08em;">适合</div>
+          <ul style="font-size: 15px; color: var(--ink-soft); line-height: 1.8; padding-left: 0; list-style: none;">
+            <li style="padding-left: 18px; position: relative;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--accent);"></span>经营实体企业或个体事业，正在经历转型期</li>
+            <li style="padding-left: 18px; position: relative; margin-top: 6px;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--accent);"></span>不是缺方法，是知道该做什么但动不起来</li>
+            <li style="padding-left: 18px; position: relative; margin-top: 6px;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--accent);"></span>愿意花40分钟认真对话，不是来要标准答案的</li>
+          </ul>
+        </div>
+        <div style="background: var(--card-muted); border: 1px solid var(--line); border-radius: 14px; padding: 24px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--ink-mute); margin-bottom: 12px; letter-spacing: 0.08em;">不适合</div>
+          <ul style="font-size: 15px; color: var(--ink-mute); line-height: 1.8; padding-left: 0; list-style: none;">
+            <li style="padding-left: 18px; position: relative;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--ink-mute);"></span>期待一份万能方案直接执行</li>
+            <li style="padding-left: 18px; position: relative; margin-top: 6px;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--ink-mute);"></span>当前面临紧急债务危机（这不是财务咨询）</li>
+            <li style="padding-left: 18px; position: relative; margin-top: 6px;"><span style="position:absolute; left:0; top:0.5em; width:6px; height:6px; border-radius:50%; background:var(--ink-mute);"></span>无法保证40分钟不被打扰的通话时间</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块四 · 快照预览（提前） ============ -->
+  <section class="section reveal" id="snapshot">
+    <div class="container">
+      <span class="eyebrow">真实交付</span>
+      <h2 class="section-title">报告长这样</h2>
+
+      <blockquote class="quote">
+        <span class="quote-mark">“</span>
+        <p class="quote-text">你真正的挑战是「模式升级」：过去「老板在场」的实体店模式已触顶。你意识到的「自媒体杠杆」，其本质是为你的专业经验与产品价值安装一个「扩音器」和「信任转换器」——它需要的，是一个适配你现有节奏的启动方式。</p>
+      </blockquote>
+
+      <blockquote class="quote">
+        <span class="quote-mark">“</span>
+        <p class="quote-text">你内心的不安，并非自我怀疑，而是对「在不确定中寻找可控支点」的务实追问。</p>
+      </blockquote>
+
+      <div style="background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 28px; margin-bottom: 24px;">
+        <div style="font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 12px; letter-spacing: 0.08em;">一个行动建议</div>
+        <p style="font-size: 17px; line-height: 1.8; color: var(--ink);">接下来30天，只做一件事：把现有门店的「到店体验」流程拆解成3个可拍摄片段，每周发布1条。不要急着开新账号，先让现有客户在你的朋友圈看到你"还在场"。</p>
+      </div>
+
+      <p class="report-meta">一份完整报告约 1200 字，基于你的问卷和对话，把事业、家庭、资产、子女四个维度连起来看。</p>
+      <p class="quote-credit">以上内容来自真实交付案例，已征得当事人同意使用，姓名已脱敏。</p>
+    </div>
+  </section>
+
+  <!-- ============ 模块五 · 怎么走（流程 + 定价） ============ -->
+  <section class="section reveal" id="how">
+    <div class="container">
+      <span class="eyebrow">怎么走</span>
+      <h2 class="section-title">三步，先把局势看清楚</h2>
+
+      <ol class="steps">
+        <li class="step" data-no="1">
+          <div class="step-title">填一份 15 题问卷</div>
+          <div class="step-tag">约 10 分钟</div>
+          <div class="step-desc"><li>不是测评，是你自己说话的地方</li></div>
+        </li>
+        <li class="step" data-no="2">
+          <div class="step-title">收到一份 0.5 版局势轮廓</div>
+          <div class="step-tag">88 元 · 48 小时内 · 可全额抵扣</div>
+          <div class="step-desc">
+            <li>基于你的问卷，把你当前局势的轮廓照出来</li>
+            <li>这一步收费88元，但如果你后续选择深度对话，这88元全额抵扣</li>
+          </div>
+          <div class="step-pricing">
+            <div>交付方式：填完问卷后，你的答卷会生成一段文字——复制后发给我（微信）即可。我收到后 48 小时内给你 0.5 版轮廓；88 元在交付前和你单独确认付款，后续深度对话全额抵扣。</div>
+          </div>
+        </li>
+        <li class="step" data-no="3">
+          <div class="step-title">一次 40 分钟深度对话 + 1.0 版拆解报告</div>
+          <div class="step-tag">880 元 · 一份完整交付</div>
+          <div class="step-desc">
+            <li><strong>40 分钟一对一深度对话</strong>——这是核心，不是附赠</li>
+            <li><strong>1.0 版《局势拆解报告》</strong>——基于对话整理，交付完整的局势地图</li>
+          </div>
+          <div class="step-pricing">
+            <div style="margin-bottom: 10px;">880 元 = 对话 + 报告，两样一起交付，缺一不可。</div>
+            <div style="font-size: 14px; color: var(--ink-soft); font-weight: 400;">传统管理咨询一次深度访谈通常 2,000–5,000 元/小时，不含书面交付。这里 880 元 = 40 分钟一对一拆解 + 一份 1.0 版局势报告。</div>
+          </div>
+        </li>
+      </ol>
+
+      <div class="free-note" style="background: transparent; border: 1px solid var(--line);">
+        <strong style="color: var(--ink);">风险逆转：</strong>对话结束后，如果你认为报告没有帮你看到新东西，全额退款，无需解释。
+      </div>
+
+      <div class="mid-cta">
+        <a class="cta-btn cta-btn--ghost" href="https://wxzhangjun.github.io/midfield-test/">填问卷，先拿 0.5 版轮廓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块六 · 问卷预览 ============ -->
+  <section class="section reveal" id="preview">
+    <div class="container">
+      <span class="eyebrow">问卷预览</span>
+      <h2 class="section-title">先看三道题，不吓人</h2>
+      <p class="preview-note">从 15 题里挑了 3 道给你看感觉。</p>
+
+      <div class="qcard">
+        <div class="q-no">Q2</div>
+        <div class="q-text">你现在最聚焦的是哪个角色？为什么是它？</div>
+        <textarea placeholder="（这是你回答的地方，不是选选项。可以试着写两句...）" style="width:100%; min-height:80px; margin-top:12px; padding:12px; border:1px solid var(--line); border-radius:8px; font-family:inherit; font-size:15px; color:var(--ink); background:var(--bg); resize:vertical;"></textarea>
+        <div class="q-note">这只是预览，不会保存。正式问卷请点击下方按钮。</div>
+      </div>
+
+      <div class="qcard">
+        <div class="q-no">Q6</div>
+        <div class="q-text">这个状态持续多久了？是从哪个节点开始的？</div>
+        <div class="q-note">（这是你回答的地方，不是选选项）</div>
+      </div>
+
+      <div class="qcard">
+        <div class="q-no">Q13</div>
+        <div class="q-text">如果现在可以动一个地方，你最想先动哪里？</div>
+        <div class="q-note">（这是你回答的地方，不是选选项）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模块七 · 行动入口 ============ -->
+  <section class="section reveal" id="start">
+    <div class="container cta">
+      <h2 class="cta-title">准备好了，就从这里开始</h2>
+      <p class="cta-sub">花 10 分钟填一份问卷，48 小时内收到你的 0.5 版局势轮廓。<br>88 元，后续可全额抵扣。</p>
+      <a class="cta-btn" href="https://wxzhangjun.github.io/midfield-test/">开始填问卷</a>
+      <p class="cta-fine">如果你还想先了解更多，欢迎直接回复这条消息。</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  (function () {
+    document.documentElement.classList.add('js');
+
+    // 滚动进入视口动效
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      for (var i = 0; i < els.length; i++) els[i].classList.add('in-view');
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            en.target.classList.add('in-view');
+            io.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      for (var j = 0; j < els.length; j++) io.observe(els[j]);
+    }
+
+    // 导航栏两态切换（Hero 暗底 → 正文暖白底）
+    var nav = document.getElementById('nav');
+    function onScroll() {
+      var threshold = window.innerHeight * 0.5;
+      if (window.scrollY > threshold) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    }
+    if (nav) {
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  })();
+</script>
+
+</body>
+</html>
