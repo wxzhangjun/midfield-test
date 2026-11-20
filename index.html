@@ -1,97 +1,433 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>人生中场 · 60秒快测</title>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="有光夜谈｜在有光读书会基础上的迭代，一个围绕共同材料展开问题交换的线下交流项目。">
+  <meta property="og:title" content="有光夜谈｜项目说明">
+  <meta property="og:description" content="带着一个真实问题来，借一份共同材料，和一群愿意思考的人交换经验、观点和判断。">
+  <meta property="og:type" content="article">
+  <title>有光夜谈｜项目说明</title>
+  <style>
+    :root {
+      --bg: #f7f3eb;
+      --bg-soft: #fcfaf5;
+      --card: #fffefa;
+      --ink: #252824;
+      --ink-2: #55564f;
+      --ink-3: #74766e;
+      --line: #e5dfd3;
+      --line-soft: #eee9df;
+      --accent: #9a744f;
+      --accent-deep: #7e5c3b;
+      --accent-tint: rgba(154, 116, 79, .10);
+      --dark: #252824;
+      --on-dark: #f8f5ee;
+      --on-dark-2: rgba(248, 245, 238, .78);
+      --max: 760px;
+      --wide: 1040px;
+    }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-  background: #f9f8f6;
-  color: #2c2c2c;
-  font-size: 16px;
-  line-height: 1.6;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  padding: 40px 24px;
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.9;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+    strong { font-weight: 650; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .wrap--wide { width: min(var(--wide), calc(100% - 40px)); margin: 0 auto; }
 
-.container {
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  animation: fadeSlideIn 0.5s ease;
-}
+    /* 顶部导航：手机上可以横向滑动 */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(247, 243, 235, .92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+    }
+    .nav-inner {
+      width: min(var(--wide), calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-height: 56px;
+    }
+    .nav-brand {
+      flex: 0 0 auto;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      white-space: nowrap;
+      color: var(--ink-3);
+      font-size: 13px;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { text-decoration: none; padding: 14px 0; }
+    .nav-links a:hover, .nav-links a:focus { color: var(--accent-deep); }
 
-.brand {
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: #999;
-  margin-bottom: 28px;
-}
+    /* 封面 */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: min(720px, 84svh);
+      display: flex;
+      align-items: center;
+      padding: 92px 0 84px;
+      background:
+        radial-gradient(ellipse 70% 55% at 80% 8%, rgba(154, 116, 79, .34), transparent 70%),
+        linear-gradient(135deg, #252824 0%, #1b1e1a 100%);
+      color: var(--on-dark);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background-image:
+        linear-gradient(rgba(248,245,238,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(248,245,238,.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .eyebrow {
+      display: block;
+      margin-bottom: 24px;
+      color: rgba(248,245,238,.58);
+      font-size: 13px;
+      letter-spacing: .18em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(46px, 12vw, 82px);
+      line-height: 1.12;
+      letter-spacing: .08em;
+      font-weight: 700;
+    }
+    .hero-rule { width: 80px; height: 3px; margin: 30px 0 28px; background: #d3a85b; }
+    .hero-lede {
+      max-width: 25em;
+      margin: 0;
+      color: var(--on-dark-2);
+      font-size: clamp(18px, 3.5vw, 22px);
+      line-height: 1.75;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 54px;
+      color: rgba(248,245,238,.62);
+      font-size: 13px;
+    }
+    .hero-meta span { padding-right: 18px; border-right: 1px solid rgba(248,245,238,.2); }
+    .hero-meta span:last-child { padding-right: 0; border-right: 0; }
 
-.title {
-  font-size: 26px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.45;
-  margin-bottom: 20px;
-}
+    /* 通用内容区 */
+    .section { padding: 76px 0; }
+    .section--soft { background: var(--bg-soft); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+    .section-kicker {
+      margin: 0 0 12px;
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+    }
+    h2 {
+      margin: 0 0 24px;
+      font-size: clamp(26px, 6vw, 38px);
+      line-height: 1.35;
+      letter-spacing: .01em;
+    }
+    h3 {
+      margin: 34px 0 8px;
+      color: #465448;
+      font-size: 19px;
+      line-height: 1.5;
+    }
+    p { margin: 0 0 20px; color: var(--ink-2); }
+    .lead { color: var(--ink); font-size: 18px; line-height: 1.85; }
+    .section p:last-child { margin-bottom: 0; }
 
-.subtitle {
-  font-size: 16px;
-  color: #666;
-  line-height: 1.8;
-  margin-bottom: 44px;
-}
+    .quote {
+      margin: 30px 0 0;
+      padding: 22px 24px 23px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-tint);
+      color: #3e594a;
+      font-size: 18px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
 
-.start-btn {
-  display: inline-block;
-  padding: 16px 56px;
-  background: #2c2c2c;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 17px;
-  font-weight: 500;
-  cursor: pointer;
-  -webkit-appearance: none;
-  font-family: inherit;
-  text-decoration: none;
-  transition: opacity 0.15s;
-}
-.start-btn:active { opacity: 0.8; }
+    /* 邀请对象 */
+    .fit-list { display: grid; gap: 12px; margin: 26px 0 24px; }
+    .fit-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 15px 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-2);
+    }
+    .fit-item::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: .68em;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .note {
+      padding: 18px 20px;
+      border-left: 2px solid var(--line);
+      color: var(--ink-3);
+      font-size: 15px;
+    }
 
-.foot {
-  margin-top: 32px;
-  font-size: 13px;
-  color: #bbb;
-}
+    /* 三种形式 */
+    .format-grid { display: grid; gap: 14px; margin-top: 28px; }
+    .format-card {
+      padding: 22px 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+    }
+    .format-card .num {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .1em;
+    }
+    .format-card h3 { margin: 5px 0 8px; font-size: 20px; }
+    .format-card p { margin: 0; font-size: 15.5px; }
+    .scale {
+      margin-top: 26px;
+      padding: 20px 22px;
+      border: 1px solid #e5d6ba;
+      background: #faf6ed;
+      border-radius: 12px;
+    }
+    .scale strong { display: block; margin-bottom: 5px; color: var(--accent-deep); font-size: 14px; letter-spacing: .08em; }
+    .scale p { margin: 0; font-size: 15.5px; }
 
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-</style>
+    /* 收获、场地价值 */
+    .takeaway-grid { display: grid; gap: 12px; margin: 26px 0 28px; }
+    .takeaway {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 17px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+    }
+    .takeaway .num { color: var(--accent); font-size: 24px; line-height: 1.2; font-weight: 700; }
+    .takeaway p { margin: 0; color: var(--ink); }
+    .value-list { list-style: none; padding: 0; margin: 24px 0 26px; }
+    .value-list li { position: relative; padding: 11px 0 11px 24px; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); }
+    .value-list li::before { content: ""; position: absolute; left: 2px; top: 22px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+    /* 首期示范 */
+    .schedule { display: grid; gap: 0; margin-top: 28px; }
+    .schedule-item { position: relative; padding: 0 0 30px 42px; border-left: 1px solid var(--line); }
+    .schedule-item:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .schedule-item::before { content: ""; position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+    .schedule-item h3 { margin: 0 0 8px; font-size: 19px; }
+    .schedule-item p { margin-bottom: 12px; font-size: 15.5px; }
+    .schedule-item p:last-child { margin-bottom: 0; }
+
+    footer { padding: 34px 0 54px; color: var(--ink-3); font-size: 13px; text-align: center; }
+
+    @media (min-width: 700px) {
+      .wrap { width: min(var(--max), calc(100% - 72px)); }
+      .section { padding: 104px 0; }
+      .format-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+      .format-card { padding: 26px 24px 28px; }
+      .takeaway-grid { grid-template-columns: repeat(3, 1fr); }
+      .takeaway { display: block; padding: 24px; }
+      .takeaway .num { margin-bottom: 22px; }
+    }
+
+    @media print {
+      .nav { display: none; }
+      .hero { min-height: auto; padding: 70px 0; }
+      .section { padding: 44px 0; break-inside: avoid; }
+      .format-grid, .takeaway-grid { grid-template-columns: repeat(3, 1fr); }
+      a { text-decoration: none; }
+    }
+  </style>
 </head>
 <body>
+  <nav class="nav" aria-label="页面导航">
+    <div class="nav-inner">
+      <div class="nav-brand">有光夜谈</div>
+      <div class="nav-links">
+        <a href="#what">项目</a>
+        <a href="#who">参与者</a>
+        <a href="#how">形式</a>
+        <a href="#takeaway">收获</a>
+        <a href="#first">首期示范</a>
+      </div>
+    </div>
+  </nav>
 
-<div class="container">
-  <div class="brand">人 生 中 场</div>
-  <h1 class="title">你现在是"累"，<br>还是"系统在亏空"？</h1>
-  <p class="subtitle">5道题，1分钟。<br>先不急着改变什么，<br>我们先给你一个判断。</p>
-  <!-- ⚠️ 把下面的 quiz.html 改成你5题快测的实际入口文件名 -->
-  <a class="start-btn" href="quiz.html">开 始</a>
-  <div class="foot">主理人 · 俊哥</div>
-</div>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <span class="eyebrow">人生中场 · 线下交流项目</span>
+      <h1>有光夜谈</h1>
+      <div class="hero-rule"></div>
+      <p class="hero-lede">带着一个真实问题来，<br>借一份共同材料，<br>和一群愿意思考的人交换经验、观点和判断。</p>
+      <div class="hero-meta">
+        <span>主理人：俊哥</span>
+        <span>首轮形式：四期试运行</span>
+      </div>
+    </div>
+  </header>
 
+  <main>
+    <section id="what" class="section">
+      <div class="wrap">
+        <p class="section-kicker">一 · 项目起点</p>
+        <h2>我想在这里做什么</h2>
+        <p>在有光读书会基础上的迭代，更名为 <strong>“有光夜谈”</strong>。</p>
+        <p class="lead">它不是普通的读书会，也不是讲座或泛泛社交，会围绕一本书、一篇文章、一个人物或一个现实问题，邀请一群愿意表达、愿意倾听、也愿意接受不同意见的人，进行一次有主题、有结构的交流。</p>
+        <p>简单说：</p>
+        <blockquote class="quote">带着一个真实问题来，借一份共同材料，和一群愿意思考的人交换经验、观点和判断。</blockquote>
+      </div>
+    </section>
+
+    <section class="section section--soft">
+      <div class="wrap">
+        <p class="section-kicker">二 · 为什么要做</p>
+        <h2>给复杂的中场人生，留一个可以把问题谈深的地方</h2>
+        <p>很多人到了人生中场，工作、家庭、关系和自我选择同时变得复杂，却很少有一个稳定、可信、不过度喧闹的地方，能够认真谈这些问题。</p>
+        <p>线上信息很多，但真正有质量的面对面交流越来越少。大家不是没有想法，而是缺少一个合适的场，以及愿意一起把问题谈深的人。</p>
+        <p>“有光夜谈”希望做的，就是为这样一群人提供一个小而稳定的交流场。</p>
+        <div class="note">它不追求短期做大，而是先聚集五到八位愿意认真交流的人，把每一次讨论做得有内容、有秩序，也有留下来的东西。</div>
+      </div>
+    </section>
+
+    <section id="who" class="section">
+      <div class="wrap">
+        <p class="section-kicker">三 · 参与者</p>
+        <h2>我们想邀请什么样的人</h2>
+        <div class="fit-list">
+          <div class="fit-item">正在面对工作、家庭或自我选择的人；</div>
+          <div class="fit-item">有一定阅读、工作或生活积累的人；</div>
+          <div class="fit-item">愿意表达自己的经验，也愿意听见不同意见的人；</div>
+          <div class="fit-item">不只想听结论，而是愿意追问一件事为什么成立、边界在哪里的人。</div>
+        </div>
+        <p class="note">我们不以学历、职业、收入或身份做硬性门槛，也不要求每个人一开始就完全同频。重要的是，愿意认真参与，而不是把活动当作普通聚会。</p>
+      </div>
+    </section>
+
+    <section id="how" class="section section--soft">
+      <div class="wrap">
+        <p class="section-kicker">四 · 活动方式</p>
+        <h2>三种形式，指向同一件事</h2>
+        <p>“有光夜谈”包括三种形式：</p>
+        <div class="format-grid">
+          <article class="format-card">
+            <div class="num">01</div>
+            <h3>读书夜</h3>
+            <p>选读一本书中的关键章节或段落，不追求机械读完，而是讨论它对我们有什么启发、哪些地方不能照搬。</p>
+          </article>
+          <article class="format-card">
+            <div class="num">02</div>
+            <h3>主题夜谈</h3>
+            <p>围绕一个现实问题，借助书、文章、访谈或案例展开交流。</p>
+          </article>
+          <article class="format-card">
+            <div class="num">03</div>
+            <h3>议题私谈</h3>
+            <p>由一位参与者带来一个真实问题，其他人先澄清，再提供自己的经验和视角，帮助他把问题看得更清楚。这是一种类小型私董会式的交流，但不替任何人做决定。</p>
+          </article>
+        </div>
+        <div class="scale">
+          <strong>活动尺度</strong>
+          <p>每场约两个小时，人数控制在六到八人左右。现场会有主持、共同材料、发言结构和最后的总结，不会变成没有边界的闲聊。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="takeaway" class="section">
+      <div class="wrap">
+        <p class="section-kicker">五 · 参与收获</p>
+        <h2>参加者带着问题来，也带着一些东西回去</h2>
+        <div class="takeaway-grid">
+          <div class="takeaway"><div class="num">01</div><p>一个新的视角；</p></div>
+          <div class="takeaway"><div class="num">02</div><p>对自己问题更清楚的判断；</p></div>
+          <div class="takeaway"><div class="num">03</div><p>一段可以继续发展的真实连接。</p></div>
+        </div>
+        <p>每场活动还会留下至少一种可见成果，例如问题卡、观点地图、合照、声音记录或经过授权的文字整理。</p>
+        <p>我希望参加者离开时能明确回答：</p>
+        <blockquote class="quote">我今天重新看见了什么？接下来准备验证什么？</blockquote>
+      </div>
+    </section>
+
+    <section class="section section--soft">
+      <div class="wrap">
+        <p class="section-kicker">六 · 结语</p>
+        <h2>让有内容的交流，在一个具体的地方发生</h2>
+        <p>希望“有光夜谈”不只是把人带到场地里，而是在这里持续发生一些值得被记住的交流。它可以带来：</p>
+        <ul class="value-list">
+          <li>稳定而有质量的夜间活动内容；</li>
+          <li>一批愿意认真交流、能够形成复参加的参与者；</li>
+          <li>不同职业、年龄和经验之间的思想碰撞；</li>
+          <li>经过授权后可用于场地传播的照片、短视频、文章或音频；</li>
+          <li>与场地气质相匹配的长期主题活动可能性。</li>
+        </ul>
+        <p>在一个信息很多、但认真交流越来越少的阶段，能够有一个地方，让人带着问题来，带着新的判断回去，本身就是一种有价值的内容。</p>
+      </div>
+    </section>
+
+    <section id="first" class="section">
+      <div class="wrap">
+        <p class="section-kicker">七 · 其它</p>
+        <h2>首期示范</h2>
+        <p>每两周举行一次，或具体协商确定。</p>
+        <div class="schedule">
+          <article class="schedule-item">
+            <h3>第一期：借题型读书夜</h3>
+            <p><strong>主题示例：别人的成功，为什么无法直接复制？</strong></p>
+            <p>可以使用《马斯克原理》或相关材料作为引子，但重点不是学习如何成为马斯克，而是讨论：哪些方法值得借鉴，哪些前提无法复制，普通人应如何改造。</p>
+          </article>
+          <article class="schedule-item">
+            <h3>第二期：主题夜谈</h3>
+            <p><strong>主题示例：人到中年，转型是在寻找机会，还是在逃离困境？</strong></p>
+          </article>
+          <article class="schedule-item">
+            <h3>第三期：议题私谈</h3>
+            <p>由一位参与者带来一个真实的工作、家庭或关系问题，进行小型私董会式讨论。</p>
+          </article>
+        </div>
+        <p class="note" style="margin-top: 30px;">以上主题仅作举例说明，可根据报名者的真实问题调整。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>有光夜谈｜项目说明 · v0.1 · 2026年11月</footer>
 </body>
 </html>
